@@ -1,161 +1,1237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beyond Stethoscope | Coming Soon</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-blue: #4a90e2;
-            --soft-blue: #eef5ff;
-            --gold: #d4af37;
-            --text-dark: #333;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beyond Stethoscope | Coming Soon</title>
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--soft-blue);
-            color: var(--text-dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-        .container {
-            text-align: center;
-            max-width: 800px;
-            padding: 40px;
-            background: white;
-            border-radius: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            position: relative;
-            margin: 20px;
-        }
+  <style>
+    :root {
+      --primary-blue: #4a90e2;
+      --soft-blue: #eef5ff;
+      --gold: #d4af37;
+      --text-dark: #1f2937;
+      --muted: #6b7280;
+      --card: #ffffff;
+      --border: rgba(31, 41, 55, 0.10);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.10);
+      --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --maxw: 1100px;
+    }
 
-        /* Fanciful Decorations */
-        .container::before, .container::after {
-            content: '✧';
-            position: absolute;
-            color: var(--gold);
-            font-size: 2rem;
-            animation: twinkle 2s infinite ease-in-out;
-        }
-        .container::before { top: 20px; left: 20px; }
-        .container::after { bottom: 20px; right: 20px; }
+    * { box-sizing: border-box; }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
+    html, body { height: 100%; }
 
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: var(--primary-blue);
-            letter-spacing: 1px;
-        }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background:
+        radial-gradient(1200px 800px at 15% 10%, rgba(74,144,226,0.18), transparent 60%),
+        radial-gradient(900px 700px at 85% 0%, rgba(212,175,55,0.18), transparent 55%),
+        linear-gradient(180deg, var(--soft-blue), #ffffff 65%);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
 
-        .profile-img {
-            width: 250px;
-            height: 330px;
-            object-fit: cover;
-            border-radius: 150px 150px 0 0;
-            border: 5px solid white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            margin: 20px 0;
-            transition: transform 0.3s ease;
-        }
+    /* ====== Top subtle floating decorations ====== */
+    .sparkle {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.7;
+      filter: blur(0.1px);
+    }
+    .sparkle::before,
+    .sparkle::after {
+      content: "✧";
+      position: absolute;
+      color: var(--gold);
+      font-size: 20px;
+      animation: twinkle 2.2s infinite ease-in-out;
+    }
+    .sparkle::before { top: 18px; left: 24px; }
+    .sparkle::after { bottom: 18px; right: 22px; animation-delay: 0.7s; }
 
-        .profile-img:hover {
-            transform: translateY(-5px);
-        }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.25; transform: scale(1) rotate(0deg); }
+      50% { opacity: 1; transform: scale(1.2) rotate(6deg); }
+    }
 
-        .quotes-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 30px;
-        }
+    /* ====== Layout wrappers ====== */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .quote {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            padding: 15px;
-            font-size: 1.1rem;
-            position: relative;
-        }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.65);
+      border-bottom: 1px solid rgba(31, 41, 55, 0.08);
+    }
 
-        .quote::after {
-            content: '';
-            display: block;
-            width: 40px;
-            height: 2px;
-            background: var(--gold);
-            margin: 10px auto 0;
-        }
+    .nav-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
 
-        .coming-soon-badge {
-            display: inline-block;
-            margin-top: 40px;
-            padding: 10px 30px;
-            background: var(--primary-blue);
-            color: white;
-            border-radius: 50px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+      min-width: 240px;
+    }
 
-        .instagram-link {
-            display: block;
-            margin-top: 20px;
-            color: var(--primary-blue);
-            text-decoration: none;
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
+    .brand-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(74,144,226,0.20), rgba(212,175,55,0.18));
+      border: 1px solid rgba(31, 41, 55, 0.10);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-badge::after{
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.8), transparent 55%);
+      transform: rotate(12deg);
+    }
+    .brand-badge span{
+      position: relative;
+      z-index: 1;
+      font-family: 'Playfair Display', serif;
+      color: var(--primary-blue);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
 
-        /* Decorative flourishes */
-        .flourish {
-            font-family: 'Playfair Display', serif;
-            color: var(--gold);
-            font-size: 1.5rem;
-        }
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.05;
+    }
+    .brand-title strong {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+    .brand-title small {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
 
-        @media (max-width: 600px) {
-            .quotes-container { grid-template-columns: 1fr; }
-            h1 { font-size: 1.8rem; }
-        }
-    </style>
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(31,41,55,0.82);
+      font-size: 13px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+    .nav-links a:hover {
+      background: rgba(74,144,226,0.10);
+      border-color: rgba(74,144,226,0.18);
+      transform: translateY(-1px);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(74,144,226,0.25);
+      background: rgba(74,144,226,0.10);
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .cta:hover {
+      background: rgba(74,144,226,0.14);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(74,144,226,0.15);
+    }
+
+    main {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 28px 18px 70px;
+      width: 100%;
+    }
+
+    /* ====== Hero ====== */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: stretch;
+      margin-top: 12px;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(31,41,55,0.10);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 20% 20%, rgba(212,175,55,0.18), transparent 60%),
+                  radial-gradient(circle at 70% 35%, rgba(74,144,226,0.18), transparent 55%);
+      transform: rotate(10deg);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .flourish {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      font-size: 15px;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0.95;
+    }
+    .flourish::before,
+    .flourish::after {
+      content: "";
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: rgba(212,175,55,0.6);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      margin: 14px 0 10px;
+      color: rgba(31,41,55,0.95);
+      letter-spacing: 0.6px;
+      line-height: 1.06;
+    }
+
+    .hero h1 .accent {
+      color: var(--primary-blue);
+    }
+
+    .hero p.lead {
+      margin: 0;
+      color: rgba(31,41,55,0.75);
+      font-size: 15px;
+      line-height: 1.7;
+      max-width: 55ch;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(31,41,55,0.10);
+      background: rgba(255,255,255,0.70);
+      font-size: 12px;
+      color: rgba(31,41,55,0.78);
+    }
+
+    .badge-soon {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, rgba(74,144,226,0.95), rgba(74,144,226,0.80));
+      color: white;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+      box-shadow: 0 12px 28px rgba(74, 144, 226, 0.28);
+      font-size: 12px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(31,41,55,0.10);
+      background: rgba(255,255,255,0.78);
+      color: rgba(31,41,55,0.86);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.10);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .btn.primary {
+      border-color: rgba(74,144,226,0.25);
+      background: rgba(74,144,226,0.12);
+      color: var(--primary-blue);
+    }
+
+    /* ====== Slider ====== */
+    .hero-media {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(31,41,55,0.10);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 420px;
+    }
+
+    .slider {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(31,41,55,0.10);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.10);
+      background: #f6f9ff;
+      isolation: isolate;
+    }
+
+    .slides {
+      position: absolute;
+      inset: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity 900ms ease, transform 1200ms ease;
+      background-size: cover;
+      background-position: center;
+      will-change: opacity, transform;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.00) 35%, rgba(255,255,255,0.65) 100%),
+        radial-gradient(600px 380px at 20% 15%, rgba(74,144,226,0.14), transparent 60%);
+      pointer-events: none;
+    }
+
+    .slider-caption {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 14px;
+      z-index: 2;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .slider-caption .text {
+      background: rgba(255,255,255,0.75);
+      border: 1px solid rgba(31,41,55,0.10);
+      padding: 10px 12px;
+      border-radius: 16px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      max-width: 70%;
+    }
+    .slider-caption .text strong {
+      display: block;
+      font-size: 13px;
+      letter-spacing: 0.2px;
+    }
+    .slider-caption .text small {
+      display: block;
+      font-size: 12px;
+      color: rgba(31,41,55,0.70);
+      margin-top: 2px;
+    }
+
+    .dots {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.70);
+      border: 1px solid rgba(31,41,55,0.10);
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(31,41,55,0.25);
+      background: rgba(31,41,55,0.10);
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease, width 180ms ease;
+    }
+    .dot.active {
+      background: rgba(74,144,226,0.75);
+      border-color: rgba(74,144,226,0.40);
+      width: 18px;
+    }
+    .dot:hover { transform: translateY(-1px); }
+
+    .media-note {
+      font-size: 12px;
+      color: rgba(31,41,55,0.65);
+      line-height: 1.5;
+      padding: 0 4px;
+    }
+
+    /* ====== Quotes row ====== */
+    .quotes {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .quote-card {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(31,41,55,0.10);
+      border-radius: var(--radius-lg);
+      padding: 14px 14px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      min-height: 96px;
+    }
+
+    .quote-card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at 30% 30%, rgba(212,175,55,0.12), transparent 55%);
+      transform: rotate(-8deg);
+      pointer-events: none;
+    }
+
+    .quote-card p {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 14px;
+      line-height: 1.45;
+      color: rgba(31,41,55,0.85);
+      text-align: center;
+    }
+
+    .quote-card .line {
+      position: relative;
+      z-index: 1;
+      width: 48px;
+      height: 2px;
+      background: rgba(212,175,55,0.7);
+      margin: 10px auto 0;
+      border-radius: 999px;
+    }
+
+    /* ====== Sections ====== */
+    .section {
+      margin-top: 26px;
+      background: rgba(255,255,255,0.86);
+      border: 1px solid rgba(31,41,55,0.10);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 22px 22px 12px;
+      border-bottom: 1px solid rgba(31,41,55,0.08);
+      background:
+        radial-gradient(900px 450px at 15% 0%, rgba(74,144,226,0.12), transparent 55%),
+        radial-gradient(700px 450px at 90% 10%, rgba(212,175,55,0.10), transparent 55%);
+    }
+
+    .section-title {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      letter-spacing: 0.4px;
+    }
+
+    .section-subtitle {
+      margin: 8px 0 0;
+      font-size: 13px;
+      color: rgba(31,41,55,0.70);
+      line-height: 1.6;
+      max-width: 85ch;
+    }
+
+    .section-body {
+      padding: 18px 22px 22px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .mini-card {
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(31,41,55,0.10);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mini-card h3 {
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+      color: rgba(31,41,55,0.88);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mini-card p {
+      margin: 8px 0 0;
+      font-size: 13px;
+      color: rgba(31,41,55,0.72);
+      line-height: 1.6;
+    }
+
+    .icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(74,144,226,0.10);
+      border: 1px solid rgba(74,144,226,0.18);
+      color: rgba(74,144,226,0.95);
+      flex: 0 0 auto;
+      font-weight: 800;
+    }
+
+    .icon.gold {
+      background: rgba(212,175,55,0.10);
+      border-color: rgba(212,175,55,0.18);
+      color: rgba(212,175,55,0.95);
+    }
+
+    /* ====== Shop section styling ====== */
+    .shop-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px;
+      border-radius: var(--radius-lg);
+      border: 1px dashed rgba(74,144,226,0.30);
+      background: rgba(74,144,226,0.06);
+    }
+
+    .shop-banner .left strong {
+      display: block;
+      font-size: 14px;
+      letter-spacing: 0.3px;
+    }
+
+    .shop-banner .left small {
+      display: block;
+      margin-top: 4px;
+      color: rgba(31,41,55,0.72);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.18), rgba(74,144,226,0.10));
+      border: 1px solid rgba(31,41,55,0.10);
+      font-weight: 700;
+      color: rgba(31,41,55,0.82);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    /* ====== Contact form ====== */
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    form {
+      display: grid;
+      gap: 10px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 12px;
+      color: rgba(31,41,55,0.78);
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(31,41,55,0.12);
+      background: rgba(255,255,255,0.90);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: rgba(74,144,226,0.35);
+      box-shadow: 0 0 0 4px rgba(74,144,226,0.10);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .submit {
+      cursor: pointer;
+      border: 1px solid rgba(74,144,226,0.25);
+      background: rgba(74,144,226,0.12);
+      color: var(--primary-blue);
+      font-weight: 700;
+      padding: 12px 14px;
+      border-radius: 14px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(74,144,226,0.12);
+      background: rgba(74,144,226,0.16);
+    }
+
+    .note {
+      font-size: 12px;
+      color: rgba(31,41,55,0.65);
+      line-height: 1.5;
+    }
+
+    .social {
+      display: grid;
+      gap: 10px;
+    }
+
+    .social a {
+      text-decoration: none;
+      color: rgba(31,41,55,0.86);
+      border: 1px solid rgba(31,41,55,0.10);
+      background: rgba(255,255,255,0.85);
+      border-radius: 16px;
+      padding: 12px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+    .social a:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.10);
+      background: rgba(255,255,255,0.92);
+    }
+
+    .social a small {
+      color: rgba(31,41,55,0.60);
+      font-size: 12px;
+    }
+
+    /* ====== Footer ====== */
+    footer {
+      margin-top: auto;
+      padding: 18px 18px 28px;
+      color: rgba(31,41,55,0.65);
+      font-size: 12px;
+    }
+    .footer-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .footer-inner a {
+      color: rgba(74,144,226,0.95);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    /* ====== Responsive ====== */
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-media { min-height: 420px; }
+      .quotes { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .contact-wrap { grid-template-columns: 1fr; }
+      .brand { min-width: unset; }
+    }
+
+    @media (max-width: 520px) {
+      .hero h1 { font-size: 34px; }
+      .nav-links { display: none; }
+      .quotes { grid-template-columns: 1fr; }
+      .slider-caption .text { max-width: 100%; }
+    }
+
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+      .slide { transition: none; }
+      .dot { transition: none; }
+      .sparkle::before, .sparkle::after { animation: none; }
+      .container::before, .container::after { animation: none; }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="sparkle" aria-hidden="true"></div>
 
-    <div class="container">
-        <span class="flourish">~ Beyond Stethoscope ~</span>
-        <h1>Empowered to Heal</h1>
+  <!-- Sticky Nav -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="Beyond Stethoscope Home">
+        <div class="brand-badge"><span>BS</span></div>
+        <div class="brand-title">
+          <strong>Beyond Stethoscope</strong>
+          <small>Healing • Growth • Real life</small>
+        </div>
+      </a>
 
-        <img src="1000109351.jpg" alt="Doctor Influencer" class="profile-img">
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#shop">Shop</a>
+        <a href="#health-tips">Health Tips</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
-        <div class="quotes-container">
-            <div class="quote">"Healing with heart and strength."</div>
-            <div class="quote">"Empowered women empower women."</div>
-            <div class="quote">"Independent, capable, and unstoppable."</div>
-            <div class="quote">"Your potential is limitless, Doctor."</div>
+      <a class="cta" href="https://instagram.com/beyond.stethoscope_" target="_blank" rel="noopener">
+        Follow on Instagram →
+      </a>
+    </div>
+  </header>
+
+  <div class="page" id="top">
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <!-- Left: Copy -->
+        <div class="hero-card">
+          <div class="hero-content">
+            <span class="flourish">Beyond Stethoscope</span>
+
+            <h1>
+              <span class="accent">Empowered</span> to Heal
+            </h1>
+
+            <p class="lead">
+              A modern doctor-creator space for real stories, practical health tips, and confidence that doesn’t
+              need permission. The full website is on the way — but the vibe is already here.
+            </p>
+
+            <div class="hero-meta">
+              <span class="pill">🩺 Doctor Creator</span>
+              <span class="pill">✨ Growth & mindset</span>
+              <span class="pill">📌 Tips that actually fit life</span>
+            </div>
+
+            <div class="badge-soon">Page Coming Soon</div>
+
+            <div class="hero-actions">
+              <a class="btn primary" href="#health-tips">Explore Health Tips</a>
+              <a class="btn" href="#shop">Shop (Merch)</a>
+              <a class="btn" href="#contact">Contact Me</a>
+            </div>
+          </div>
         </div>
 
-        <div class="coming-soon-badge">Page Coming Soon</div>
+        <!-- Right: Slider -->
+        <aside class="hero-media" aria-label="Hero image rotation">
+          <div class="slider" id="heroSlider" aria-live="polite">
+            <div class="slides">
+              <!-- Use exactly these filenames (same folder as HTML): -->
+              <!-- 1) 1000109351.jpg (already there) -->
+              <!-- 2) img1.jpg -->
+              <!-- 3) img2.jpg -->
+              <div class="slide active" data-caption-title="Beyond Stethoscope" data-caption-sub="Stories • Strength • Healing"
+                   style="background-image:url('1000109351.jpg');"></div>
+              <div class="slide" data-caption-title="Creator Energy" data-caption-sub="Real life • Real growth"
+                   style="background-image:url('img1.jpg');"></div>
+              <div class="slide" data-caption-title="Coming Soon" data-caption-sub="Merch • Tips • Community"
+                   style="background-image:url('img2.jpg');"></div>
+            </div>
 
-        <a href="https://instagram.com/beyond.stethoscope_" class="instagram-link">
-            Follow the journey @beyond.stethoscope_
-        </a>
-    </div>
+            <div class="slider-caption">
+              <div class="text">
+                <strong id="capTitle">Beyond Stethoscope</strong>
+                <small id="capSub">Stories • Strength • Healing</small>
+              </div>
 
+              <div class="dots" role="tablist" aria-label="Image selector">
+                <button class="dot active" type="button" aria-label="Show image 1" aria-selected="true"></button>
+                <button class="dot" type="button" aria-label="Show image 2" aria-selected="false"></button>
+                <button class="dot" type="button" aria-label="Show image 3" aria-selected="false"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="media-note">
+            Place these three images in the same folder as this HTML:
+            <strong>1000109351.jpg</strong>, <strong>img1.jpg</strong>, <strong>img2.jpg</strong>.
+            The slider rotates automatically and can be clicked using the dots.
+          </div>
+        </aside>
+      </section>
+
+      <!-- QUOTES -->
+      <section class="quotes" aria-label="Signature quotes">
+        <div class="quote-card">
+          <p>"Healing with heart and strength."</p>
+          <div class="line"></div>
+        </div>
+        <div class="quote-card">
+          <p>"Empowered women empower women."</p>
+          <div class="line"></div>
+        </div>
+        <div class="quote-card">
+          <p>"Independent, capable, and unstoppable."</p>
+          <div class="line"></div>
+        </div>
+        <div class="quote-card">
+          <p>"Your potential is limitless, Doctor."</p>
+          <div class="line"></div>
+        </div>
+      </section>
+
+      <!-- SHOP SECTION -->
+      <section class="section" id="shop" aria-label="Shop section">
+        <div class="section-header">
+          <h2 class="section-title">Shop</h2>
+          <p class="section-subtitle">
+            Built for the ones who carry calm confidence in chaos — scrubs, hoodies, journals, and little reminders
+            that you’re more than your shift.
+          </p>
+        </div>
+
+        <div class="section-body">
+          <div class="shop-banner">
+            <div class="left">
+              <strong>Merch</strong>
+              <small>Coming soon. Clean designs, comfy fabric, and “doctor-core” aesthetics — without cringe.</small>
+            </div>
+            <div class="tag">✨ Merch — Coming Soon</div>
+          </div>
+
+          <div style="height: 14px;"></div>
+
+          <div class="grid-3">
+            <div class="mini-card">
+              <h3><span class="icon">🧥</span> Apparel</h3>
+              <p>Hoodies, tees, and minimal prints that look good on duty days and off days.</p>
+            </div>
+            <div class="mini-card">
+              <h3><span class="icon gold">📓</span> Journals</h3>
+              <p>Guided pages for reflections, habit tracking, and “I’m still standing” energy.</p>
+            </div>
+            <div class="mini-card">
+              <h3><span class="icon">☕</span> Desk Vibes</h3>
+              <p>Mugs & small desk pieces for the “clinic-to-creator” corner of your life.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HEALTH TIPS SECTION -->
+      <section class="section" id="health-tips" aria-label="Health tips section">
+        <div class="section-header">
+          <h2 class="section-title">Health Tips</h2>
+          <p class="section-subtitle">
+            Practical, habit-friendly tips that don’t demand perfection. Saveable nuggets. Creator-friendly explanations.
+          </p>
+        </div>
+
+        <div class="section-body">
+          <div class="grid-3">
+            <div class="mini-card">
+              <h3><span class="icon">💧</span> Hydration (Simple Rule)</h3>
+              <p>
+                Start the day with water before caffeine. Add a pinch of salt + lemon if you sweat a lot.
+                Consistency beats “one perfect day.”
+              </p>
+            </div>
+
+            <div class="mini-card">
+              <h3><span class="icon gold">🛌</span> Sleep Reset</h3>
+              <p>
+                Try a 10-minute “lights-down” wind-down: dim screen brightness, slow music, and a tiny stretch.
+                Your nervous system likes rituals.
+              </p>
+            </div>
+
+            <div class="mini-card">
+              <h3><span class="icon">🥗</span> Plate Hack</h3>
+              <p>
+                Half veggies, quarter protein, quarter carbs. If you can’t do it every time, do it “most times”.
+                That’s how real life wins.
+              </p>
+            </div>
+
+            <div class="mini-card">
+              <h3><span class="icon">🚶</span> 5-Min Walk</h3>
+              <p>
+                After meals, a short walk helps digestion and glucose control. Not a workout — just movement.
+              </p>
+            </div>
+
+            <div class="mini-card">
+              <h3><span class="icon gold">🧠</span> Stress Micro-Reset</h3>
+              <p>
+                Two slow breaths: inhale 4 seconds, exhale 6 seconds. Repeat twice.
+                It’s small, but it shifts the physiology.
+              </p>
+            </div>
+
+            <div class="mini-card">
+              <h3><span class="icon">📌</span> Coming Soon</h3>
+              <p>
+                Weekly “save this” tips, mini checklists, and health myth-busters — designed for reels & stories too.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT SECTION -->
+      <section class="section" id="contact" aria-label="Contact section">
+        <div class="section-header">
+          <h2 class="section-title">Contact Me</h2>
+          <p class="section-subtitle">
+            Collabs, brand inquiries, speaking, or just a kind message. Send it here — this form opens your email app.
+          </p>
+        </div>
+
+        <div class="section-body">
+          <div class="contact-wrap">
+            <!-- Form: opens email client via mailto (no server needed) -->
+            <div class="mini-card">
+              <h3><span class="icon">✉️</span> Message</h3>
+              <p style="margin-top:6px;">
+                This uses <strong>mailto</strong>. Replace the email below with your preferred address.
+              </p>
+
+              <div style="height: 10px;"></div>
+
+              <form id="contactForm" novalidate>
+                <div class="field">
+                  <label for="name">Your Name</label>
+                  <input id="name" name="name" type="text" autocomplete="name" placeholder="Enter your name" required />
+                </div>
+
+                <div class="field">
+                  <label for="email">Your Email</label>
+                  <input id="email" name="email" type="email" autocomplete="email" placeholder="Enter your email" required />
+                </div>
+
+                <div class="field">
+                  <label for="subject">Subject</label>
+                  <input id="subject" name="subject" type="text" placeholder="Collab / Brand / Question" required />
+                </div>
+
+                <div class="field">
+                  <label for="message">Message</label>
+                  <textarea id="message" name="message" placeholder="Write your message..." required></textarea>
+                </div>
+
+                <div class="form-actions">
+                  <button class="submit" type="submit">Send Email</button>
+                  <span class="note">
+                    Tip: You can later connect a backend (Formspree/Netlify) for direct submissions.
+                  </span>
+                </div>
+              </form>
+            </div>
+
+            <!-- Social / Direct -->
+            <div class="social">
+              <a href="https://instagram.com/beyond.stethoscope_" target="_blank" rel="noopener">
+                <div>
+                  <strong>Instagram</strong><br />
+                  <small>@beyond.stethoscope_</small>
+                </div>
+                <div>→</div>
+              </a>
+
+              <!-- Replace with your email (optional) -->
+              <a href="mailto:hello@beyondstethoscope.com?subject=Hello%20Beyond%20Stethoscope">
+                <div>
+                  <strong>Email</strong><br />
+                  <small>hello@beyondstethoscope.com</small>
+                </div>
+                <div>→</div>
+              </a>
+
+              <!-- Optional: add your YouTube / Linktree later -->
+              <a href="#shop">
+                <div>
+                  <strong>Merch Updates</strong><br />
+                  <small>Launching soon</small>
+                </div>
+                <div>→</div>
+              </a>
+
+              <div class="mini-card">
+                <h3><span class="icon gold">⭐</span> Quick Note</h3>
+                <p>
+                  This is a “coming soon” site, but it’s already a clean landing page.
+                  Add real blog posts, products, and a newsletter later without changing the design.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <div>© <span id="year"></span> Beyond Stethoscope • All rights reserved.</div>
+        <div>
+          <a href="https://instagram.com/beyond.stethoscope_" target="_blank" rel="noopener">Instagram</a>
+          <span style="opacity:0.5;"> • </span>
+          <a href="#top">Back to top</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      // Footer year
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // ===== Slider Logic (auto rotate + dot navigation) =====
+      const slider = document.getElementById("heroSlider");
+      const slides = Array.from(slider.querySelectorAll(".slide"));
+      const dots = Array.from(slider.querySelectorAll(".dot"));
+      const capTitle = document.getElementById("capTitle");
+      const capSub = document.getElementById("capSub");
+
+      let index = 0;
+      let timer = null;
+      const INTERVAL_MS = 4200;
+
+      function setActive(i) {
+        index = (i + slides.length) % slides.length;
+
+        slides.forEach((s, idx) => s.classList.toggle("active", idx === index));
+        dots.forEach((d, idx) => {
+          const active = idx === index;
+          d.classList.toggle("active", active);
+          d.setAttribute("aria-selected", active ? "true" : "false");
+        });
+
+        const s = slides[index];
+        capTitle.textContent = s.getAttribute("data-caption-title") || "Beyond Stethoscope";
+        capSub.textContent = s.getAttribute("data-caption-sub") || "Coming Soon";
+      }
+
+      function next() {
+        setActive(index + 1);
+      }
+
+      function start() {
+        stop();
+        timer = setInterval(next, INTERVAL_MS);
+      }
+
+      function stop() {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      // Dot clicks
+      dots.forEach((dot, i) => {
+        dot.addEventListener("click", () => {
+          setActive(i);
+          start();
+        });
+      });
+
+      // Pause on hover/focus (nice modern feel)
+      slider.addEventListener("mouseenter", stop);
+      slider.addEventListener("mouseleave", start);
+      slider.addEventListener("focusin", stop);
+      slider.addEventListener("focusout", start);
+
+      // Start rotation
+      setActive(0);
+      start();
+
+      // ===== Contact form: mailto builder (no backend) =====
+      const form = document.getElementById("contactForm");
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const subject = document.getElementById("subject").value.trim();
+        const message = document.getElementById("message").value.trim();
+
+        // Basic validation
+        if (!name || !email || !subject || !message) {
+          alert("Please fill all fields before sending.");
+          return;
+        }
+
+        // Change this to your real inbox:
+        const TO_EMAIL = "hello@beyondstethoscope.com";
+
+        const body =
+          "Name: " + name + "%0D%0A" +
+          "Email: " + email + "%0D%0A%0D%0A" +
+          message + "%0D%0A%0D%0A" +
+          "---%0D%0A" +
+          "Sent from Beyond Stethoscope landing page.";
+
+        const mailto = "mailto:" + encodeURIComponent(TO_EMAIL) +
+          "?subject=" + encodeURIComponent(subject) +
+          "&body=" + body;
+
+        window.location.href = mailto;
+      });
+    })();
+  </script>
 </body>
 </html>
